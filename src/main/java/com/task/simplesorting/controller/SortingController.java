@@ -1,67 +1,32 @@
 package com.task.simplesorting.controller;
 
-import com.task.simplesorting.models.StorageArray;
+import com.task.simplesorting.service.SortingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class SortingController {
 
 
+    @Autowired
+    private SortingService sortingService;
+
+
     @CrossOrigin("*")
     @RequestMapping(value = "bubble", method = RequestMethod.POST)
-    public ArrayList<Integer> getBubble(@RequestBody StorageArray storageArray) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        int[] numbers = storageArray.getNumbers();
-
-        int n = numbers.length;
-        int temp = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 1; j < (n - i); j++) {
-
-                if (numbers[j - 1] > numbers[j]) {
-                    temp = numbers[j - 1];
-                    numbers[j - 1] = numbers[j];
-                    numbers[j] = temp;
-                }
-
-            }
-        }
-        for (int i : numbers) {
-            arrayList.add(i);
-        }
-        return arrayList;
+    public List<Integer> getBubble(@RequestParam(value = "arraySize")int bubbleSize) {
+        return sortingService.getBubble(bubbleSize);
 
     }
 
 
 
-
-
-
     @CrossOrigin("*")
     @RequestMapping(value = "selection", method = RequestMethod.POST)
-    public ArrayList<Integer> getSelection(@RequestBody StorageArray storageArray) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        int[] numbers = storageArray.getNumbers();
-        int n = numbers.length;
-
-        for (int i = 0; i < n - 1; i++) {
-            int min = i;
-            for (int j = i + 1; j < n; j++)
-                if (numbers[j] < numbers[min])
-                    min= j;
-            int temp = numbers[min];
-            numbers[min] = numbers[i];
-            numbers[i] = temp;
-        }
-        for (int i : numbers) {
-            arrayList.add(i);
-
-        }
-        return arrayList;
+    public List<Integer> getSelection(@RequestParam(value = "arraySize")int selectionSize) {
+        return sortingService.getSelection(selectionSize);
     }
 
 
@@ -69,25 +34,64 @@ public class SortingController {
 
     @CrossOrigin("*")
     @RequestMapping(value = "insertion", method = RequestMethod.POST)
-    public ArrayList<Integer> getInsertion(@RequestBody StorageArray storageArray) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        int[] numbers = storageArray.getNumbers();
-        int out, in;
-        for (out = 1; out < numbers.length; out++) {
-            int temp = numbers[out];
-            in = out;
-            while (in > 0 && numbers[in - 1] > temp) {
-                numbers[in] = numbers[in - 1];
-                --in;
-            }
-            numbers[in] = temp;
-
-        }
-        for (int i : numbers) {
-            arrayList.add(i);
-        }
-        return arrayList;
+    public List<Integer> getInsertion(@RequestParam(value = "arraySize")int insertionSize) {
+        return sortingService.getInsertion(insertionSize);
     }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "merge", method = RequestMethod.POST)
+    public List<Integer> getMerge(@RequestParam(value = "arraySize") int mergeSize) {
+        return sortingService.getMerge(mergeSize);
+    }
+
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "quick", method = RequestMethod.POST)
+    public List<Integer> getQuick(@RequestParam(value = "arraySize")int quickSize) {
+        return sortingService.getQuick(quickSize);
+    }
+
+
+
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "bubbleTime")
+    public long getBubbleTime() {
+        return sortingService.getBubbleSortingTime();
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "selectionTime")
+    public long getSelectionTime() {
+        return sortingService.getSelectionSortingTime();
+    }
+
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "insertionTime")
+    public long getInsertionTime() {
+        return sortingService.getInsertionSortingTime();
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "mergeTime")
+    public long getMergeTime() {
+        return sortingService.getMergeSortingTime();
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "quickTime")
+    public long getQuickTime() {
+        return sortingService.getQuickSortingTime();
+    }
+
+
+
+
+
+
+
+
 
 
 }
